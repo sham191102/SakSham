@@ -1,4 +1,4 @@
-.profile {
+/* .profile {
   min-height: 100vh;
   background: #d4e2f8;
   display: flex;
@@ -25,4 +25,96 @@
 
 .profile strong {
   color: #555;
+} */
+
+ .profile-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  background:#f4f6f9;
+}
+
+.profile-card{
+  background:white;
+  padding:40px;
+  width:400px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  text-align:center;
+}
+
+.profile-card h2{
+  margin-bottom:20px;
+  color:#333;
+}
+
+.profile-avatar{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#4CAF50;
+  color:white;
+  font-size:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 25px auto;
+  font-weight:bold;
+}
+
+.profile-field{
+  text-align:left;
+  margin-bottom:15px;
+}
+
+.profile-field label{
+  font-size:14px;
+  color:#777;
+}
+
+.profile-field p{
+  margin:5px 0 0 0;
+  font-size:16px;
+}
+
+.profile-field input{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+.role{
+  font-weight:bold;
+  color:#2196f3;
+}
+
+.profile-buttons{
+  margin-top:20px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.profile-buttons button{
+  padding:10px 15px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.save-btn{
+  background:#4CAF50;
+  color:white;
+}
+
+.logout-btn{
+  background:#f44336;
+  color:white;
+}
+
+.profile-buttons button:hover{
+  opacity:0.9;
 }

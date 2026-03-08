@@ -154,17 +154,27 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // LOGIN FUNCTION
-  const login = (email, password) => {
+  const login = async (email, password) => {
 
-    const storedUser = JSON.parse(localStorage.getItem("registeredUser"));
+    const res = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (
-      storedUser &&
-      storedUser.email === email &&
-      storedUser.password === password
-    ) {
-      setUser(storedUser);
-      localStorage.setItem("user", JSON.stringify(storedUser));
+    const data = await res.json();
+
+    if (res.ok) {
+
+      const userData = { email };
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setUser(userData);
+
       return true;
     }
 
@@ -172,21 +182,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   // SIGNUP FUNCTION
-  const signup = (name, email, password) => {
+  const signup = async (email, password) => {
 
-    const newUser = {
-      name,
-      email,
-      password
-    };
+    const res = await fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    localStorage.setItem("registeredUser", JSON.stringify(newUser));
+    return res.ok;
   };
 
   // LOGOUT FUNCTION
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

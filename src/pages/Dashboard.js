@@ -10,12 +10,32 @@ function Dashboard() {
 
   const [complaints, setComplaints] = useState([]);
 
-  // Load complaints from localStorage
+  // Load only current user's complaints
   useEffect(() => {
+
     const savedComplaints =
       JSON.parse(localStorage.getItem("complaints")) || [];
-    setComplaints(savedComplaints);
-  }, []);
+
+    const userComplaints = savedComplaints.filter(
+      (c) => c.userEmail === user?.email
+    );
+
+    setComplaints(userComplaints);
+
+  }, [user]);
+ 
+ const deleteComplaint = (id)=>{
+
+  const all =
+   JSON.parse(localStorage.getItem("complaints")) || [];
+
+  const updated = all.filter(c => c.id !== id);
+
+  localStorage.setItem("complaints",JSON.stringify(updated));
+
+  setComplaints(updated);
+
+ };
 
   return (
     <>
@@ -26,31 +46,58 @@ function Dashboard() {
       </header>
 
       <div className="dashboard">
-        <h2>Welcome, {user?.name}</h2>
+
+        <h2>Welcome, {user?.email}</h2>
 
         <button onClick={() => navigate("/create")}>
           Create Complaint
         </button>
 
+<p>Category: {complaints.category}</p>
+
+<p>Severity: {complaints.severity}</p>
+
+<p>AI Score: {(complaints.probability*100).toFixed(1)}%</p>
+
+<p>Status: {complaints.status}</p>
         <button onClick={() => navigate("/profile")}>
           Profile
         </button>
 
         {/* Complaints List */}
-        {complaints.map((complaint) => (
-          <div key={complaint.id} className="complaint-card">
 
-            <h3>{complaint.title}</h3>
-            <p>{complaint.location}</p>
+        {complaints.length === 0 ? (
+          <p>No complaints yet</p>
+        ) : (
+          complaints.map((complaint) => (
+            <div key={complaint.id} className="complaint-card">
 
-            {complaint.mapImage ? (
-              <img src={complaint.mapImage} alt="location map" width="250" />
-            ) : (
-              <p>No Map Image</p>
-            )}
+              <h3>{complaint.title}</h3>
+              <p>{complaint.location}</p>
 
-          </div>
-        ))}
+              {complaint.mapImage ? (
+                <img
+                  src={complaint.mapImage}
+                  alt="location map"
+                  width="250"
+                />
+              ) : (
+                <p>No Map Image</p>
+              )}
+
+              <h4>{complaint.title}</h4>
+
+              {/* <p>{complaint.location}</p> */}
+
+              {/* <p>Status: <b>{complaint.status}</b></p> */}
+
+              <button onClick={()=>deleteComplaint(complaint.id)}>
+               Delete
+              </button>
+                        
+            </div>
+          ))
+        )}
 
         <button
           onClick={() => {
@@ -73,117 +120,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-//  import { useContext } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-// import { AuthContext } from "../context/AuthContext";
-// import "./Dashboard.css";
-
-// function Dashboard() {
-
-//   const { user, logout } = useContext(AuthContext);
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     logout();
-//     navigate("/login");
-//   };
-
-//   const complaints = [
-//     { id: 1, title: "Pothole on Main Road", location: "Sector 5", status: "Pending" },
-//     { id: 2, title: "Street Light Not Working", location: "Block A", status: "In Progress" },
-//     { id: 3, title: "Garbage Overflow", location: "Market Area", status: "Resolved" }
-//   ];
-
-//   return (
-//     <div className="dashboard">
-
-//       {/* NAVBAR */}
-//       <header className="dash-navbar">
-//         <h2>Awaz360</h2>
-
-//         <nav>
-//           <Link to="/create">Create Complaint</Link>
-//           <Link to="/profile">Profile</Link>
-//           <button onClick={handleLogout}>Logout</button>
-//         </nav>
-//       </header>
-
-
-//       {/* WELCOME */}
-//       <section className="welcome">
-//         <h1>Welcome, {user?.name || "User"} 👋</h1>
-//         <p>Track and manage your civic complaints easily.</p>
-//       </section>
-
-
-//       {/* STATS CARDS */}
-//       <section className="stats">
-
-//         <div className="card total">
-//           <h3>Total Complaints</h3>
-//           <p>12</p>
-//         </div>
-
-//         <div className="card pending">
-//           <h3>Pending</h3>
-//           <p>5</p>
-//         </div>
-
-//         <div className="card progress">
-//           <h3>In Progress</h3>
-//           <p>4</p>
-//         </div>
-
-//         <div className="card resolved">
-//           <h3>Resolved</h3>
-//           <p>3</p>
-//         </div>
-
-//       </section>
-
-
-//       {/* COMPLAINT LIST */}
-//       <section className="complaints">
-
-//         <h2>Your Complaints</h2>
-
-//         <table>
-
-//           <thead>
-//             <tr>
-//               <th>Title</th>
-//               <th>Location</th>
-//               <th>Status</th>
-//             </tr>
-//           </thead>
-
-//           <tbody>
-//             {complaints.map((c) => (
-//               <tr key={c.id}>
-//                 <td>{c.title}</td>
-//                 <td>{c.location}</td>
-//                 <td className={c.status.toLowerCase()}>{c.status}</td>
-//               </tr>
-//             ))}
-//           </tbody>
-
-//         </table>
-
-//       </section>
-
-
-//       {/* QUICK ACTION */}
-//       <section className="actions">
-
-//         <button onClick={() => navigate("/create")}>
-//           + Create New Complaint
-//         </button>
-
-//       </section>
-
-//     </div>
-//   );
-// }
-
-// export default Dashboard;

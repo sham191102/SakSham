@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,55 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+
+body{
+ margin:0;
+ font-family:Arial, Helvetica, sans-serif;
+ background:#c0d0fa;
+}
+
+.container{
+ width:90%;
+ max-width:1100px;
+ margin:auto;
+}
+
+.card{
+ background:white;
+ padding:30px;
+ border-radius:10px;
+ box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+button{
+ padding:10px 18px;
+ border:none;
+ border-radius:6px;
+ cursor:pointer;
+ font-size:14px;
+}
+
+.primary-btn{
+ background:#5689f5;
+ color:white;
+}
+
+.danger-btn{
+ background:#ef4444;
+ color:white;
+}
+
+.success-btn{
+ background:#16a34a;
+ color:white;
+}
+
+input{
+ width:100%;
+ padding:10px;
+ border:1px solid #ccc;
+ border-radius:6px;
+ margin:8px 0;
 }

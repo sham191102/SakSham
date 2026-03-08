@@ -10,10 +10,10 @@ function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const success = login(email, password);
+    const success = await login(email, password);
 
     if (success) {
       navigate("/dashboard");

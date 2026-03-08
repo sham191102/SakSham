@@ -73,11 +73,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f2f2f2;
+  background: #cac8c8;
 }
 
 .auth-box {
-  background: white;
+  background: rgb(174, 210, 210);
   padding: 30px;
   width: 300px;
   border-radius: 8px;
