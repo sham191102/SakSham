@@ -65,79 +65,90 @@ import "./Signup.css";
 
 function Signup(){
 
- const [email,setEmail] = useState("");
- const [password,setPassword] = useState("");
+  const [name,setName] = useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
 
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
- const handleSignup = async () => {
+  const handleSignup = async () => {
 
-  if(!email || !password){
-   alert("Please fill all fields");
-   return;
-  }
+    if(!name || !email || !password){
+      alert("Please fill all fields");
+      return;
+    }
 
-  try{
+    try{
 
-   const res = await fetch("http://localhost:5000/signup",{
-    method:"POST",
-    headers:{
-     "Content-Type":"application/json"
-    },
-    body:JSON.stringify({email,password})
-   });
+      const res = await fetch("http://localhost:5000/signup",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
 
-   const data = await res.json();
+      const data = await res.json();
 
-   if(res.ok){
-    alert("Signup successful");
-    navigate("/login");
-   }else{
-    alert(data.message);
-   }
+      if(res.ok){
+        alert("Signup successful");
+        navigate("/login");
+      }else{
+        alert(data.message);
+      }
 
-  }catch(error){
-   console.log(error);
-   alert("Server error");
-  }
+    }catch(error){
+      console.log(error);
+      alert("Server error");
+    }
 
- };
+  };
 
- return(
+  return(
 
-  <div className="signup-container">
+    <div className="signup-container">
+      <div className="signup-card">
 
-   <div className="signup-card">
+        <h2>Create Account</h2>
 
-    <h2>Create Account</h2>
+        <input
+          type="text"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e)=>setName(e.target.value)}
+        />
 
-    <input
-     type="email"
-     placeholder="Enter Email"
-     value={email}
-     onChange={(e)=>setEmail(e.target.value)}
-    />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-    <input
-     type="password"
-     placeholder="Enter Password"
-     value={password}
-     onChange={(e)=>setPassword(e.target.value)}
-    />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        />
 
-    <button onClick={handleSignup}>
-     Signup
-    </button>
+        <button onClick={handleSignup}>
+          Signup
+        </button>
 
-    <p className="signup-link">
-     Already have an account? <Link to="/login">Login</Link>
-    </p>
+        <p className="signup-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
 
-   </div>
+      </div>
+    </div>
 
-  </div>
+  );
 
- );
 }
 
 export default Signup;

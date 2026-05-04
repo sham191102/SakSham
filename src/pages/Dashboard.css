@@ -1,76 +1,11 @@
-.dashboard {
-  min-height: 100vh;
-  background: #def7d7;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.dashboard h2 {
-  margin-bottom: 40px;
-  color: #333;
-}
-
-.dashboard button {
-  width: 220px;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 6px;
-  background: hsl(211, 86%, 71%);
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-/* HEADER */
-.header {
-  width: 100%;
-  background: #3b4044;
-  color: white;
-  text-align: center;
-  padding: 15px 0;
-  font-size: 18px;
-}
-
-/* FOOTER */
-.footer {
-  width: 100%;
-  background: #44494d;
-  color: white;
-  text-align: center;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  font-size: 14px;
-}
-
-/* Dashboard spacing adjust */
-.dashboard {
-  padding-bottom: 80px;
-}
-
-.dashboard button:hover {
-  background: #0056b3;
-}
-
-.dashboard button:last-child {
-  background: #e54d5c;
-}
-
-.dashboard button:last-child:hover {
-  background: #ba303d;
-} */
+/* MAIN DASHBOARD */
 
 .dashboard{
-  font-family: Arial;
-  background:#f4f6f9;
+  font-family: Arial, Helvetica, sans-serif;
+  background:#DDF4E7;
   min-height:100vh;
 }
+
 
 /* NAVBAR */
 
@@ -79,23 +14,33 @@
   justify-content:space-between;
   align-items:center;
   padding:15px 40px;
-  background:#1e293b;
+  background:#124170;
   color:white;
 }
 
-.dash-navbar nav a{
-  margin-right:20px;
-  color:white;
-  text-decoration:none;
+.dash-navbar h2{
+  margin:0;
 }
 
-.dash-navbar button{
+.dash-navbar nav button{
+  margin-left:10px;
   padding:8px 14px;
   border:none;
-  background:#ef4444;
-  color:white;
+  border-radius:5px;
   cursor:pointer;
+  font-size:14px;
 }
+
+.dash-navbar nav button:first-child{
+  background:#67C090;
+  color:white;
+}
+
+.dash-navbar nav button:last-child{
+  background:#e74c3c;
+  color:white;
+}
+
 
 /* WELCOME */
 
@@ -105,9 +50,11 @@
 
 .welcome h1{
   margin-bottom:5px;
+  color:#124170;
 }
 
-/* STATS */
+
+/* STATS CARDS */
 
 .stats{
   display:grid;
@@ -119,58 +66,127 @@
 .card{
   background:white;
   padding:20px;
-  border-radius:8px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
+  border-radius:10px;
+ box-shadow:0 0 15px rgba(7, 243, 117, 0.838);
 }
 
 .card h3{
   font-size:16px;
+  color:#b49494;
 }
 
 .card p{
   font-size:28px;
   font-weight:bold;
+  margin-top:5px;
 }
 
-.total{border-left:5px solid #3b82f6;}
-.pending{border-left:5px solid #f59e0b;}
-.progress{border-left:5px solid #6366f1;}
-.resolved{border-left:5px solid #22c55e;}
+.total{
+  border-left:6px solid #124170;
+}
 
-/* TABLE */
+.pending{
+  border-left:6px solid #f59e0b;
+}
+
+.progress{
+  border-left:6px solid #26667F;
+}
+
+.resolved{
+  border-left:6px solid #67C090;
+}
+
+
+/* COMPLAINT TABLE */
 
 .complaints{
   padding:40px;
+}
+
+.complaints h2{
+  margin-bottom:20px;
+  color:#124170;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
   background:white;
+  border-radius:8px;
+  overflow:hidden;
 }
 
-th,td{
+th{
+  background:#124170;
+  color:white;
   padding:12px;
-  border-bottom:1px solid #ddd;
   text-align:left;
 }
 
-
-.pending{color:#f59e0b;}
-.in\ progress{color:#6366f1;}
-.resolved{color:#22c55e;}
-
-/* ACTION BUTTON */
-
-.actions{
-  padding:0 40px 40px;
+td{
+  padding:12px;
+  border-bottom:1px solid #eee;
 }
 
-.actions button{
-  padding:12px 20px;
-  background:#2563eb;
-  color:white;
+tr:hover{
+  background:#f3f4f6;
+}
+
+
+/* STATUS COLORS */
+
+.pending{
+  color:#f59e0b;
+  font-weight:bold;
+}
+
+.inprogress{
+  color:#26667F;
+  font-weight:bold;
+}
+
+.resolved{
+  color:#67C090;
+  font-weight:bold;
+}
+
+
+/* DELETE BUTTON */
+
+table button{
+  padding:6px 12px;
   border:none;
+  border-radius:4px;
+  background:#e74c3c;
+  color:white;
   cursor:pointer;
-  border-radius:6px;
+}
+
+table button:hover{
+  background:#c0392b;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .dash-navbar{
+    flex-direction:column;
+    gap:10px;
+  }
+
 }

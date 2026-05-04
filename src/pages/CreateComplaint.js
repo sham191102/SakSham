@@ -1,209 +1,11 @@
-// import { useState } from "react"
-// import { useNavigate } from "react-router-dom";
-// import { analyzeComplaint } from "../ai/aiEngine";
-// import "./CreateComplaint.css"
-
-// function CreateComplaint() {
-
-//     const navigate = useNavigate();
-//   const [title, setTitle] = useState("")
-//   const [description, setDescription] = useState("")
-//   const [category, setCategory] = useState("")
-//   const [priority, setPriority] = useState("Medium")
-//   const [location, setLocation] = useState("")
-//   const [mapImage, setMapImage] = useState("")
-  
-//   const [image, setImage] = useState(null) 
-//   const [preview, setPreview] = useState(null)
-//   const [loading, setLoading] = useState(false)
-//   const [success, setSuccess] = useState(false)
-
-//       const getLocation = () => {
-//   navigator.geolocation.getCurrentPosition((position) => {
-
-//     const lat = position.coords.latitude
-//     const lng = position.coords.longitude
-
-//     const loc = `${lat}, ${lng}`
-//     setLocation(loc)
-
-//     // Map image generate
-//     const mapUrl = `https://maps.locationiq.com/v3/staticmap?key=YOUR_API_KEY&center=${lat},${lng}&zoom=16&size=600x300&markers=icon:large-red-cutout|${lat},${lng}`
-
-//     setMapImage(mapUrl)
-//     //  )
-//     })
-//   }
-
-//   // 🖼 Image Preview
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0]
-//     setImage(file)
-//     if (file) {
-//       setPreview(URL.createObjectURL(file))
-//     }
-//   }
-
-//   // 🎤 Voice Support
-//   const startListening = () => {
-//     const recognition = new window.webkitSpeechRecognition()
-//     recognition.onresult = (event) => {
-//       setDescription(event.results[0][0].transcript)
-//     }
-//     recognition.start()
-//   }
-
-//   // 🚀 Submit
-//   const handleSubmit = async (e) => {
-
-//  e.preventDefault();
-
-  
-//  const text = title + " " + location;
-
-//  const ai = analyzeComplaint(text);
-
-//  if(ai.probability < 0.2){
-//   alert("AI rejected complaint ❌");
-//   return;
-//  }
-
-//  const user = JSON.parse(localStorage.getItem("user"));
-
-//  const newComplaint = {
-//   title,
-//   description,
-//   location,
-//   category: ai.category,
-//   severity: ai.severity,
-//   status:"Pending",
-//   userEmail:user.email
-//  };
-
-//  try{
-
-//   const res = await fetch("http://localhost:5000/complaints",{
-//    method:"POST",
-//    headers:{
-//     "Content-Type":"application/json"
-//    },
-//    body:JSON.stringify(newComplaint)
-   
-//   });
-
-//   const data = await res.json();
-
-//   alert("Complaint submitted successfully");
-
-//   navigate("/dashboard");
-
-//  }catch(error){
-//   console.log(error);
-//   alert("Server error");
-//  }
-
-// };
-
-//   return (
-//     <div className="complaint-container">
-//       <h2>Create New Complaint</h2>
-
-//       {success && <p className="success-msg">Complaint Submitted Successfully!</p>}
-
-//       <form onSubmit={handleSubmit} className="complaint-form">
-
-//         {/* Title */}
-//         <input
-//           type="text"
-//           placeholder="Complaint Title"
-//           value={title}
-//           onChange={(e) => setTitle(e.target.value)}
-//           required
-//         /> 
-
-//         {/* Description + Voice */}
-//         <textarea
-//           placeholder="Describe your issue..."
-//           value={description}
-//           onChange={(e) => setDescription(e.target.value)}
-//           maxLength="200"
-//           required
-//         />
-//         <div className="description-footer">
-//           <span>{description.length}/200</span>
-//           <button type="button" onClick={startListening}>
-//             🎤 Speak
-//           </button>
-//         </div>
-
-//         {/* Category */}
-//         <select
-//           value={category}
-//           onChange={(e) => setCategory(e.target.value)}
-//           required
-//         >
-//           <option value="">Select Category</option>
-//           <option value="Road Issue">Road Issue</option>
-//           <option value="Water Problem">Water Problem</option>
-//           <option value="Electricity">Electricity</option>
-//           <option value="Garbage">Garbage</option>
-//           <option value="Noise Pollution">Noise Pollution</option>
-//           <option value="Other Issue">Other Issue</option>
-//         </select>
-
-//         {/* Priority */}
-//         <select
-//           value={priority}
-//           onChange={(e) => setPriority(e.target.value)}
-//         >
-//           <option value="Low">Low Priority</option>
-//           <option value="Medium">Medium Priority</option>
-//           <option value="High">High Priority</option>
-//         </select>
-
-//         {/* Location */}
-//         <div className="location-box">
-//           <input
-//             type="text"
-//             placeholder="Location"
-//             value={location}
-//             onChange={(e) => setLocation(e.target.value)}
-//           />
-//           <button type="button" onClick={getLocation}>
-//             Detect
-//           </button>
-//         </div>
-
-//         {mapImage && (
-//          <div className="map-preview">
-//            <img src={mapImage} alt="map location" />
-//          </div>
-//        )}
-
-//         {/* Image Upload */}
-//         <input type="file" onChange={handleImageChange} />
-//         {preview && (
-//           <img src={preview} alt="preview" className="preview-img" />
-//         )}
-
-//         {/* Submit */}
-//         <button type="submit" className="submit-btn">
-//           {loading ? "Submitting..." : "Submit Complaint"}
-//         </button>
-   
-  
-
-//       </form>
-//     </div>
-//   )
-// }
-
-// export default CreateComplaint
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { analyzeComplaint } from "../ai/aiEngine";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import "./CreateComplaint.css";
+
+import { FaHome, FaPlusCircle, FaUser, FaUserShield } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function CreateComplaint() {
 
@@ -218,236 +20,174 @@ function CreateComplaint() {
   const [preview,setPreview] = useState(null);
 
   const [loading,setLoading] = useState(false);
+  const [aiResult,setAiResult] = useState(null);
 
-  // 📍 Detect Location
-  const getLocation = () => {
+  const { transcript, resetTranscript } = useSpeechRecognition();
 
-    navigator.geolocation.getCurrentPosition((position)=>{
+  useEffect(() => {
+    setDescription(transcript);
+  }, [transcript]);
 
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+// 🤖 AI
+const handleAI = async () => {
+  const res = await fetch("http://localhost:5000/ai/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: description })
+  });
 
-      const loc = `${lat}, ${lng}`;
-      setLocation(loc);
+  const data = await res.json();
+  setAiResult(data);
+};
 
-      const mapUrl =
-      `https://maps.locationiq.com/v3/staticmap?key=YOUR_API_KEY&center=${lat},${lng}&zoom=16&size=600x300&markers=icon:large-red-cutout|${lat},${lng}`;
+// 📍 Location
+const getLocation = () => {
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
 
-      setMapImage(mapUrl);
+    setLocation(`${lat}, ${lng}`);
+    setMapImage(`https://maps.locationiq.com/v3/staticmap?key=YOUR_KEY&center=${lat},${lng}&zoom=16&size=600x300`);
+  });
+};
 
-    });
+// 🖼 Image
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  setImage(file);
 
+  if (file) {
+    setPreview(URL.createObjectURL(file));
+  }
+};
+
+// 🚀 Submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const newComplaint = {
+    title,
+    description,
+    location
   };
 
-  // 🖼 Image Preview
-  const handleImageChange = (e)=>{
+  await fetch("http://localhost:5000/complaints", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newComplaint)
+  });
 
-    const file = e.target.files[0];
-    setImage(file);
-
-    if(file){
-      setPreview(URL.createObjectURL(file));
-    }
-
-  };
-
-  // 🎤 Voice Recognition
-  const startListening = () => {
-
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-
-    recognition.onresult = (event) => {
-
-      const speechText = event.results[0][0].transcript;
-
-      setDescription((prev)=> prev + " " + speechText);
-
-    };
-
-    recognition.start();
-
-  };
-
-  // 🚀 Submit Complaint
-  const handleSubmit = async (e)=>{
-
-    e.preventDefault();
-
-    setLoading(true);
-
-    const text = title + " " + description;
-
-    const ai = analyzeComplaint(text);
-
-    if(ai.probability < 0.2){
-
-      alert("AI rejected complaint ❌");
-      setLoading(false);
-      return;
-
-    }
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const newComplaint = {
-
-      title,
-      description,
-      location,
-      image,
-
-      category: ai.category,
-      severity: ai.severity,
-
-      status:"Pending",
-      userEmail:user.email
-
-    };
-
-    try{
-
-      const res = await fetch("http://localhost:5000/complaints",{
-
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify(newComplaint)
-
-      });
-
-      await res.json();
-
-      alert("Complaint submitted successfully ✅");
-
-      navigate("/dashboard");
-
-    }
-
-    catch(error){
-
-      console.log(error);
-      alert("Server error");
-
-    }
-
-    setLoading(false);
-
-  };
+  alert("Submitted ✅");
+};
 
   return (
 
-    <div className="complaint-container">
+    <div className="dashboard-layout">
 
-      <h2>Create Complaint</h2>
+      {/* 🔥 SIDEBAR */}
+      <div className="sidebar">
+        <h2>⚡ Panel</h2>
 
-      <form onSubmit={handleSubmit} className="complaint-form">
+        <a href="/dashboard"><FaHome /> Dashboard</a>
+        <a href="/create"><FaPlusCircle /> Create</a>
+        <a href="/admin"><FaUserShield /> Admin</a>
+        <a href="/profile"><FaUser /> Profile</a>
+      </div>
 
-        {/* Title */}
 
-        <input
-          type="text"
-          placeholder="Complaint Title"
-          value={title}
-          onChange={(e)=>setTitle(e.target.value)}
-          required
-        />
+      {/* 🔥 MAIN CONTENT WITH ANIMATION */}
+      <motion.div
+        className="main-content"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
 
-        {/* Description */}
+        <div className="form-card">
+          <h2>Create Complaint</h2>
 
-        <textarea
-          placeholder="Describe your issue..."
-          value={description}
-          onChange={(e)=>setDescription(e.target.value)}
-          required
-        />
+          <form onSubmit={handleSubmit}>
 
-        <div className="voice-box">
+            <input
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e)=>setTitle(e.target.value)}
+            />
 
-          <button
-          type="button"
-          onClick={startListening}
-          className="voice-btn"
-          >
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e)=>setDescription(e.target.value)}
+            />
 
-          🎤 Speak
+            {/* 🎤 Voice */}
+            <div className="btn-row">
+              <motion.button type="button" whileTap={{ scale: 0.9 }}
+                onClick={()=>SpeechRecognition.startListening({continuous:true})}>
+                🎤 Start
+              </motion.button>
 
-          </button>
+              <motion.button type="button" whileTap={{ scale: 0.9 }}
+                onClick={SpeechRecognition.stopListening}>
+                🛑 Stop
+              </motion.button>
 
+              <motion.button type="button" whileTap={{ scale: 0.9 }}
+                onClick={resetTranscript}>
+                🔄 Reset
+              </motion.button>
+            </div>
+
+            {/* 📍 Location */}
+            <input
+              type="text"
+              value={location}
+              onChange={(e)=>setLocation(e.target.value)}
+              placeholder="Location"
+            />
+
+            <motion.button type="button" whileTap={{ scale: 0.95 }}
+              onClick={getLocation}>
+              📍 Detect Location
+            </motion.button>
+
+            {mapImage && <img src={mapImage} alt="map" />}
+
+            {/* 🖼 Image */}
+            <input type="file" onChange={handleImageChange}/>
+            {preview && <img src={preview} alt="preview"/>}
+
+            {/* 🤖 AI Result */}
+            {aiResult && (
+              <div className="ai-result">
+                <p>Category: {aiResult.category}</p>
+                <p>Severity: {aiResult.severity}</p>
+                <p>Confidence: {(aiResult.probability*100).toFixed(1)}%</p>
+              </div>
+            )}
+
+            <motion.button type="button"
+              whileTap={{ scale: 0.95 }}
+              onClick={handleAI}>
+              🤖 Check with AI
+            </motion.button>
+
+            {/* 🚀 Submit */}
+            <motion.button
+              type="submit"
+              className="submit-btn"
+              whileTap={{ scale: 0.9 }}
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </motion.button>
+
+          </form>
         </div>
 
-        {/* Location */}
-
-        <div className="location-box">
-
-          <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e)=>setLocation(e.target.value)}
-          />
-
-          <button
-          type="button"
-          onClick={getLocation}
-          >
-
-          Detect
-
-          </button>
-
-        </div>
-
-        {mapImage && (
-
-          <div className="map-preview">
-
-            <img src={mapImage} alt="map"/>
-
-          </div>
-
-        )}
-
-        {/* Image Upload */}
-
-        <input
-        type="file"
-        onChange={handleImageChange}
-        />
-
-        {preview && (
-
-          <img
-          src={preview}
-          alt="preview"
-          className="preview-img"
-          />
-
-        )}
-
-        {/* Submit */}
-
-        <button
-        type="submit"
-        className="submit-btn"
-        >
-
-        {loading ? "Submitting..." : "Submit Complaint"}
-
-        </button>
-
-      </form>
-
+      </motion.div>
     </div>
-
   );
-
 }
 
 export default CreateComplaint;

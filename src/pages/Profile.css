@@ -1,67 +1,50 @@
-/* .profile {
-  min-height: 100vh;
-  background: #d4e2f8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* PAGE BACKGROUND */
 
-.profile h2 {
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.profile p {
-  background: rgb(208, 243, 194);
-  width: 300px;
-  padding: 12px 15px;
-  margin: 10px 0;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(30, 26, 26, 0.08);
-  font-size: 16px;
-}
-
-.profile strong {
-  color: #555;
-} */
-
- .profile-container{
+.profile-container{
+  min-height:100vh;
+  background:#DDF4E7;
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  background:#f4f6f9;
+  font-family:Arial, Helvetica, sans-serif;
 }
+
+
+/* PROFILE CARD */
 
 .profile-card{
   background:white;
-  padding:40px;
-  width:400px;
+  width:380px;
+  padding:30px;
   border-radius:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  box-shadow:0 6px 18px rgba(109, 159, 246, 0.8);
   text-align:center;
 }
 
 .profile-card h2{
   margin-bottom:20px;
-  color:#333;
+  color:#124170;
 }
+
+
+/* AVATAR */
 
 .profile-avatar{
   width:80px;
   height:80px;
-  border-radius:50%;
-  background:#4CAF50;
+  background:#67C090;
   color:white;
   font-size:32px;
+  font-weight:bold;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 25px auto;
-  font-weight:bold;
+  margin:0 auto 20px auto;
 }
+
+
+/* PROFILE FIELD */
 
 .profile-field{
   text-align:left;
@@ -69,13 +52,13 @@
 }
 
 .profile-field label{
-  font-size:14px;
-  color:#777;
+  font-size:13px;
+  color:#555;
 }
 
 .profile-field p{
   margin:5px 0 0 0;
-  font-size:16px;
+  font-size:15px;
 }
 
 .profile-field input{
@@ -83,38 +66,86 @@
   padding:8px;
   margin-top:5px;
   border:1px solid #ccc;
-  border-radius:6px;
+  border-radius:5px;
+  font-size:14px;
 }
+
+
+/* ROLE TEXT */
 
 .role{
   font-weight:bold;
-  color:#2196f3;
+  color:#26667F;
 }
+
+
+/* BUTTON AREA */
 
 .profile-buttons{
   margin-top:20px;
   display:flex;
-  justify-content:space-between;
+  flex-direction:column;
+  gap:10px;
 }
+
+
+/* GENERAL BUTTON */
 
 .profile-buttons button{
-  padding:10px 15px;
+  padding:10px;
   border:none;
   border-radius:6px;
-  cursor:pointer;
   font-size:14px;
+  cursor:pointer;
 }
+
+
+/* EDIT BUTTON */
+
+.profile-buttons button:first-child{
+  background:#124170;
+  color:white;
+}
+
+
+/* SAVE BUTTON */
 
 .save-btn{
-  background:#4CAF50;
+  background:#67C090;
   color:white;
 }
 
-.logout-btn{
-  background:#f44336;
+
+/* DASHBOARD BUTTON */
+
+.dashboard-btn{
+  background:#26667F;
   color:white;
 }
+
+
+/* LOGOUT BUTTON */
+
+.logout-btn{
+  background:#e74c3c;
+  color:white;
+}
+
+
+/* BUTTON HOVER */
 
 .profile-buttons button:hover{
   opacity:0.9;
+}
+
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width:500px){
+
+  .profile-card{
+    width:90%;
+    padding:20px;
+  }
+
 }

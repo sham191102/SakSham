@@ -41,7 +41,7 @@
 body{
  margin:0;
  font-family:Arial, Helvetica, sans-serif;
- background:#c0d0fa;
+ background:#F9FAFB;
 }
 
 .container{
@@ -51,7 +51,7 @@ body{
 }
 
 .card{
- background:white;
+ background:#FFFFFF;
  padding:30px;
  border-radius:10px;
  box-shadow:0 4px 12px rgba(0,0,0,0.08);

@@ -136,66 +136,173 @@
 //   );
 // };
 
+// import { createContext, useState, useEffect } from "react";
+
+// export const AuthContext = createContext();
+
+// export const AuthProvider = ({ children }) => {
+
+//   const [user, setUser] = useState(null);
+
+//   // Check user in localStorage on page load
+//   // useEffect(() => {
+//   //   const storedUser = JSON.parse(localStorage.getItem("user"));
+
+//   //   if (storedUser) {
+//   //     setUser(storedUser);
+//   //   }
+//   // }, []);
+
+//   useEffect(() => {
+//   try {
+//     const data = localStorage.getItem("user");
+
+//     if (data && data !== "undefined") {
+//       const parsedUser = JSON.parse(data);
+//       setUser(parsedUser);
+//     }
+//   } catch (error) {
+//     console.error("Corrupted user in localStorage");
+//     localStorage.removeItem("user");
+//   }
+// }, []);
+
+//   // LOGIN FUNCTION
+//   const login = async (email, password) => {
+
+//     const res = await fetch("http://localhost:5000/login", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ email, password }),
+//     });
+
+//     //const data = await res.json();
+
+//     if (res.ok) {
+
+//       const userData = data.user ;
+
+//       localStorage.setItem("token", data.token);
+//       localStorage.setItem("user", JSON.stringify(userData));
+
+//       setUser(userData);
+
+//       return true;
+//     }
+
+//     return false;
+//   };
+
+//   // SIGNUP FUNCTION
+//   const signup = async (email, password) => {
+
+//     const res = await fetch("http://localhost:5000/signup", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ email, password }),
+//     });
+
+//     return res.ok;
+//   };
+
+//   // LOGOUT FUNCTION
+//   const logout = () => {
+//     setUser(null);
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("token");
+//   };
+
+//   return (
+//     <AuthContext.Provider
+//       value={{
+//         user,
+//         login,
+//         signup,
+//         logout
+//       }}
+//     >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
 import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
 
-  // Check user in localStorage on page load
+  // ✅ Load user safely on refresh
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
-    if (storedUser) {
-      setUser(storedUser);
+    try {
+      const data = localStorage.getItem("user");
+      if (data && data !== "undefined") {
+        setUser(JSON.parse(data));
+      }
+    } catch {
+      console.error("Corrupted user data");
+      localStorage.removeItem("user");
     }
   }, []);
 
-  // LOGIN FUNCTION
+  // ✅ LOGIN
   const login = async (email, password) => {
+    try {
+      const res = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const res = await fetch("http://localhost:5000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        console.error("Invalid JSON from server");
+        return false;
+      }
 
-    const data = await res.json();
+      if (res.ok && data.user) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
-    if (res.ok) {
+        setUser(data.user);
+        return true;
+      }
 
-      const userData = { email };
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      setUser(userData);
-
-      return true;
+      return false;
+    } catch (err) {
+      console.error("Login error:", err);
+      return false;
     }
-
-    return false;
   };
 
-  // SIGNUP FUNCTION
+  // ✅ SIGNUP
   const signup = async (email, password) => {
+    try {
+      const res = await fetch("http://localhost:5000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const res = await fetch("http://localhost:5000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    return res.ok;
+      return res.ok;
+    } catch (err) {
+      console.error("Signup error:", err);
+      return false;
+    }
   };
 
-  // LOGOUT FUNCTION
+  // ✅ LOGOUT
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -203,14 +310,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        signup,
-        logout
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

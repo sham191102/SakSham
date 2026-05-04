@@ -46,3 +46,19 @@ export function analyzeComplaint(text){
  };
 
 }
+
+// export async function analyzeComplaint(text){
+
+//   const res = await fetch("http://localhost:5000/ai/analyze",{
+//     method:"POST",
+//     headers:{
+//       "Content-Type":"application/json"
+//     },
+//     body: JSON.stringify({text})
+//   });
+
+//   const data = await res.json();
+
+//   return data;
+
+// }

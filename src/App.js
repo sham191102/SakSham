@@ -9,7 +9,7 @@ import CreateComplaint from "./pages/CreateComplaint";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
-import Analytics from "./pages/Analytics";
+import Admin from "./pages/Admin";
 import "./App.css";
 
 function App() {
@@ -20,9 +20,8 @@ function App() {
            <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/analytics" element={<Analytics />} />
-         
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          
 
   
           <Route
@@ -48,6 +47,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
               </ProtectedRoute>
             }
           />

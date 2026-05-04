@@ -1,0 +1,99 @@
+/* Admin.css */
+
+body {
+  background-color: #9ab6df;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+}
+
+.admin-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.complaint-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.complaint-card:hover {
+  transform: translateY(-3px);
+}
+
+.complaint-title {
+  margin: 0;
+  color: #222;
+}
+
+.complaint-text {
+  color: #555;
+  margin: 5px 0;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.Pending {
+  color: orange;
+}
+
+.status.Verified {
+  color: green;
+}
+
+.status.Rejected {
+  color: red;
+}
+
+.department {
+  font-weight: bold;
+  color: #444;
+}
+
+/* Buttons */
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.verify-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.verify-btn:hover {
+  background-color: #218838;
+}
+
+.reject-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #c82333;
+}
+
+/* Dropdown */
+select {
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-top: 8px;
+  cursor: pointer;
+}
